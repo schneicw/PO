@@ -16,6 +16,11 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
+	public Set<Account> getAccountsByCustomer(int cID) {
+		return adao.getAllCustomerAccounts(cID);
+	}
+	
+	@Override
 	public Account getAccountById(int id) {
 		return adao.getAccountByAcctID(id);
 	}

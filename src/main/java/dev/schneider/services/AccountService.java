@@ -8,6 +8,7 @@ import dev.schneider.entities.Account;
 public interface AccountService {
 	//CRUD like operation
 	Account addAccount(Account account);
+	Set<Account> getAccountsByCustomer(int cID);
 	Account getAccountById(int id);
 	Account updateAccount(Account account);
 	boolean deleteAccount(int id);

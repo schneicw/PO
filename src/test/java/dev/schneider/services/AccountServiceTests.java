@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Set;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -49,16 +51,23 @@ class AccountServiceTests {
 		Assertions.assertNotEquals(0, account.getAcctID());
 		}
 	
-	
 	@Test
 	@Order(2)
+	void getAccountsByCustomer() {
+		Set<Account> accounts = aserv.getAccountsByCustomer(1);
+		Assertions.assertEquals(1, accounts.size());
+		System.out.println(accounts);
+		}
+	
+	@Test
+	@Order(3)
 	void getAccount() {
 		Account account = aserv.getAccountById(1);
 		Assertions.assertEquals(5, account.getBalance());
 		}
 	
 	@Test
-	@Order(3)
+	@Order(4)
 	void updateAccount() {
 		Account account = aserv.getAccountById(1);
 		account.setAcctName("checking");
@@ -68,40 +77,30 @@ class AccountServiceTests {
 
 	
 	@Test
-	@Order(4)
+	@Order(5)
 	void deleteAccount() {
 		boolean result = aserv.deleteAccount(1);
 		Assertions.assertEquals(true, result);
 	}
 	
 	@Test
-	@Order(5)
+	@Order(6)
 	void deleteAccountNegative() {
 		boolean result = aserv.deleteAccount(13243);
 		Assertions.assertEquals(false, result);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@AfterAll
+	static void tearDown() {
+		try (Connection conn = ConnectionUtil.getConnection()){
+			String sql = "CALL tear_down_db";
+			CallableStatement cs = conn.prepareCall(sql);
+			cs.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	
 }

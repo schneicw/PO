@@ -58,8 +58,18 @@ class AccountDAOTests {
 	
 	
 	//read
+	
 	@Test
 	@Order(2)
+	void getAccountsByCustomer() {
+		Set<Account> accounts = adao.getAllCustomerAccounts(1);
+		Assertions.assertEquals(1, accounts.size());
+//		//acctDAO.createAccount(account);
+//		Assertions.assertEquals(5, account.getAcctBalance(1));
+	}
+	
+	@Test
+	@Order(3)
 	void getAccountByAccountID() {
 		Account account = adao.getAccountByAcctID(1);
 		Assertions.assertEquals(5, account.getBalance());
@@ -70,7 +80,7 @@ class AccountDAOTests {
 	
 	//update
 	@Test
-	@Order(3)
+	@Order(4)
 	void updateAccountName() {
 		Account account = adao.getAccountByAcctID(1);
 		account.setAcctName("checking");
@@ -83,7 +93,7 @@ class AccountDAOTests {
 	}
 	
 	@Test
-	@Order(4)
+	@Order(5)
 	void updateAccountBalance() {
 		Account account = adao.getAccountByAcctID(1);
 		account.setBalance(100000);
@@ -97,14 +107,14 @@ class AccountDAOTests {
 	//delete
 	
 	@Test
-	@Order(5)
+	@Order(6)
 	void deleteAccount() {
 		boolean result = adao.deleteAccount(1);
 		Assertions.assertEquals(true, result);
 	}
 	
 	@Test
-	@Order(6)
+	@Order(7)
 	void deleteAccountNegative() {
 		boolean result = adao.deleteAccount(13243);
 		Assertions.assertEquals(false, result);

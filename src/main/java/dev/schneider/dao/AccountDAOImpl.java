@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashSet;
+import java.util.Set;
 
 import dev.schneider.entities.Account;
 import dev.schneider.entities.Customer;
@@ -49,6 +51,35 @@ public class AccountDAOImpl implements AccountDAO {
 			
 			return account;
 		}catch(SQLException e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@Override
+	public Set<Account> getAllCustomerAccounts(int cID) {
+		try(Connection conn = ConnectionUtil.getConnection()){
+			String sql = "SELECT * FROM BankDB.account WHERE c_id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, cID);
+
+			ResultSet rs = ps.executeQuery();
+			// ResultSet returns a table. the intial record it points is before the first record
+			
+			Set<Account> accounts = new HashSet<Account>();
+			
+			while(rs.next()) {
+				Account account = new Account();
+				account.setAcctID(rs.getInt("a_id"));
+				account.setcID(rs.getInt("c_id"));
+				account.setAcctName(rs.getString("name"));
+				account.setBalance(rs.getInt("balance"));
+				accounts.add(account);
+			}
+			
+			return accounts;
+							
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		}

@@ -53,6 +53,11 @@ public class CustomerController {
 		ctx.result(json);
 	};
 	
+	public static Handler deleteCustomer = (ctx) -> {
+		String id = ctx.pathParam("id");
+		boolean result = cserv.deleteCustomer(Integer.parseInt(id)); 
+	};
+	
 	
 	
 }

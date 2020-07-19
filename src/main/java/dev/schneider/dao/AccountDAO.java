@@ -12,7 +12,7 @@ public interface AccountDAO {
 	
 	//read
 	Account getAccountByAcctID(int acctID);
-	
+	Set<Account> getAllCustomerAccounts(int cID);
 	//update
 	Account updateAccount(Account account);
 	
