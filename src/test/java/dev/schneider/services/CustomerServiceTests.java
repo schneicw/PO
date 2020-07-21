@@ -34,7 +34,6 @@ class CustomerServiceTests {
 			CallableStatement cs = conn.prepareCall(sql);
 			cs.execute();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -57,13 +56,20 @@ class CustomerServiceTests {
 
 	@Test
 	@Order(3)
-	void getCustomer()  {
+	void getCustomerByID()  {
 		Customer customer = cserv.getCustomerByID(1);
 		Assertions.assertEquals("myusername", customer.getUsername());
 	}
 	
 	@Test
 	@Order(4)
+	void getCustomerByUsername()  {
+		Customer customer = cserv.getCustomerbyUsername("myusername");
+		Assertions.assertEquals("mypass", customer.getPassword());
+	}
+	
+	@Test
+	@Order(5)
 	void updateCustomer(){
 		Customer customer = cserv.getCustomerByID(1);	
 		customer.setPassword("mynewpass");
@@ -73,14 +79,14 @@ class CustomerServiceTests {
 	
 	
 	@Test
-	@Order(5)
+	@Order(6)
 	void deleteCustomernegative() {
 		boolean result = cserv.deleteCustomer(13453);
 		Assertions.assertEquals(false, result);
 		}
 	
 	@Test
-	@Order(6)
+	@Order(7)
 	void deleteCustomer() {
 		boolean result = cserv.deleteCustomer(1);
 		Assertions.assertEquals(true, result);
@@ -93,7 +99,6 @@ class CustomerServiceTests {
 			CallableStatement cs = conn.prepareCall(sql);
 			cs.execute();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

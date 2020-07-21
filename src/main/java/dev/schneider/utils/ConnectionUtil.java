@@ -17,20 +17,15 @@ public class ConnectionUtil {
 				props.load(in);
 				String details = props.getProperty("conndetails");
 				
-				//Connection conn = DriverManager.getConnection("jdbc:mariadb://revtraindb.cobrwpnkiowc.us-west-1.rds.amazonaws.com:3306/SchoolDB?user=schneicw&password=dbpass123");
 				Connection conn = DriverManager.getConnection(details);
-				System.out.println(conn);
 				return conn;
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return null;
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return null;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return null;
 			}

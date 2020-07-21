@@ -41,7 +41,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			ps.execute();
 			
 			ResultSet rs = ps.getGeneratedKeys();
-			rs.next(); //poor decision just technicality shit
+			rs.next(); 
 			int key = rs.getInt("c_id");
 			customer.setcID(key);
 			
@@ -60,7 +60,6 @@ public class CustomerDAOImpl implements CustomerDAO {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			
 			ResultSet rs = ps.executeQuery();
-			// ResultSet returns a table. the intial record it points is before the first record
 			
 			Set<Customer> customers = new HashSet<Customer>();
 			
@@ -88,8 +87,30 @@ public class CustomerDAOImpl implements CustomerDAO {
 			ps.setInt(1, cID);
 			
 			ResultSet rs = ps.executeQuery();
-			// ResultSet returns a table. the intial record it points is before the first record
-			rs.next();// move the cursor to the first actual record
+			rs.next();
+			
+			Customer customer = new Customer();
+			customer.setcID(rs.getInt("c_id"));
+			customer.setUsername(rs.getString("username"));
+			customer.setPassword(rs.getString("password"));
+			
+			return customer;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@Override
+	public Customer getCustomerByUsername(String username) {
+		try(Connection conn = ConnectionUtil.getConnection()){
+			String sql = "SELECT * FROM BankDB.customer WHERE username = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, username);
+			
+			ResultSet rs = ps.executeQuery();
+			rs.next();
 			
 			Customer customer = new Customer();
 			customer.setcID(rs.getInt("c_id"));

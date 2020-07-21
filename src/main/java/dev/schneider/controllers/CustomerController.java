@@ -20,14 +20,23 @@ public class CustomerController {
 		Customer customer = gson.fromJson(customerJson, Customer.class);
 		cserv.createCustomer(customer);
 		
-		//usually want to return created object	
 		ctx.result(gson.toJson(customer));
+		ctx.status(201);
 	};
 	
 	public static Handler getAllCustomers = (ctx) -> {
 		Set<Customer> customers = cserv.getAllCustomers();
 		String json = gson.toJson(customers);
-		ctx.result(json);
+		
+		String nameQuery = ctx.queryParam("username");
+		if (nameQuery != null) {
+			Customer customer = cserv.getCustomerbyUsername(nameQuery);
+			ctx.result(gson.toJson(customer));
+		}
+		else {
+			ctx.result(json);
+		}
+		
 		ctx.status(200);
 			
 	};
@@ -39,23 +48,32 @@ public class CustomerController {
 			ctx.result("not found");
 			ctx.status(404);
 		}else {
-		String json = gson.toJson(customer);
-		ctx.result(json);
-		ctx.status(200);
+			String json = gson.toJson(customer);
+			ctx.result(json);
+			ctx.status(200);
 		}
 	};
 	
 	public static Handler updateCustomer = (ctx) -> {
-		String CustomerJson = ctx.body();
-		Customer Customer = gson.fromJson(CustomerJson, Customer.class);
-		cserv.updateCustomer(Customer);
-		String json = gson.toJson(Customer);
+		String customerJson = ctx.body();
+		Customer customer = gson.fromJson(customerJson, Customer.class);
+		cserv.updateCustomer(customer);
+		String json = gson.toJson(customer);
 		ctx.result(json);
+		ctx.status(200);
 	};
 	
 	public static Handler deleteCustomer = (ctx) -> {
 		String id = ctx.pathParam("id");
-		boolean result = cserv.deleteCustomer(Integer.parseInt(id)); 
+		Customer customer = cserv.getCustomerByID(Integer.parseInt(id));
+		if (customer == null) {
+			ctx.result("not found");
+			ctx.status(404);
+		}else {
+			Boolean result = cserv.deleteCustomer(Integer.parseInt(id)); 
+			ctx.result(result.toString());
+			ctx.status(200);
+		}
 	};
 	
 	

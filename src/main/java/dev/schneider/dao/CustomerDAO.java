@@ -6,14 +6,14 @@ import java.util.Set;
 import dev.schneider.entities.Customer;
 
 public interface CustomerDAO {
-	//where sql statements will go to insert into database
 	
 	//create
 	Customer createCustomer(Customer customer);
 	
 	//read
 	Set<Customer> getAllCustomer();
-	Customer getCustomerByID(int cID) ;
+	Customer getCustomerByID(int cID);
+	Customer getCustomerByUsername(String username);
 	
 	//update
 	Customer updateCustomer(Customer customer);

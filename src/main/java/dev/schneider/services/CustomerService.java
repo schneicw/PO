@@ -12,6 +12,6 @@ public interface CustomerService {
 	Customer getCustomerByID(int id) ;
 	Customer updateCustomer(Customer customer);
 	boolean deleteCustomer(int id);
-	
 	//higher level
+	Customer getCustomerbyUsername(String username);
 }

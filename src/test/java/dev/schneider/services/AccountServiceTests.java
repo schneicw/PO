@@ -17,6 +17,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 import dev.schneider.entities.Account;
 import dev.schneider.entities.Customer;
+import dev.schneider.exceptions.NegativeBalanceException;
 import dev.schneider.utils.ConnectionUtil;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -35,7 +36,6 @@ class AccountServiceTests {
 			CallableStatement cs = conn.prepareCall(sql);
 			cs.execute();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -56,35 +56,62 @@ class AccountServiceTests {
 	void getAccountsByCustomer() {
 		Set<Account> accounts = aserv.getAccountsByCustomer(1);
 		Assertions.assertEquals(1, accounts.size());
-		System.out.println(accounts);
 		}
 	
 	@Test
 	@Order(3)
+	void getAccountsLessThan() {
+		Set<Account> accounts = aserv.getAccountsByCustomer(1);
+		Set<Account> accountsLess = aserv.balanceLessThan(accounts, 500);
+		Assertions.assertEquals(1, accountsLess.size());
+	}
+	
+	@Test
+	@Order(4)
+	void getAccountsGreaterThan() {
+		Set<Account> accounts = aserv.getAccountsByCustomer(1);
+		Set<Account> accountsGreater = aserv.balanceGreaterThan(accounts, 500);
+		Assertions.assertEquals(0, accountsGreater.size());
+
+	}
+	
+	@Test
+	@Order(5)
 	void getAccount() {
 		Account account = aserv.getAccountById(1);
 		Assertions.assertEquals(5, account.getBalance());
 		}
 	
 	@Test
-	@Order(4)
-	void updateAccount() {
+	@Order(6)
+	void updateAccount() throws NegativeBalanceException {
 		Account account = aserv.getAccountById(1);
 		account.setAcctName("checking");
 		account = aserv.updateAccount(account);
 		Assertions.assertEquals("checking", account.getAcctName());
 		}
 
+	@Test
+	@Order(7)
+		
+	void updateAccountNegative() throws NegativeBalanceException {
+		Exception e = assertThrows(NegativeBalanceException.class, ()->{
+			Account account = aserv.getAccountById(1);
+			account.setBalance(-1);;
+			aserv.updateAccount(account);
+		});
+		Assertions.assertEquals(e.getMessage(), "Balance cannot be negative");	
+	}
 	
 	@Test
-	@Order(5)
+	@Order(8)
 	void deleteAccount() {
 		boolean result = aserv.deleteAccount(1);
 		Assertions.assertEquals(true, result);
 	}
 	
 	@Test
-	@Order(6)
+	@Order(9)
 	void deleteAccountNegative() {
 		boolean result = aserv.deleteAccount(13243);
 		Assertions.assertEquals(false, result);
@@ -97,7 +124,6 @@ class AccountServiceTests {
 			CallableStatement cs = conn.prepareCall(sql);
 			cs.execute();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

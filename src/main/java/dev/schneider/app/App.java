@@ -9,21 +9,19 @@ public class App {
 		Javalin app = Javalin.create().start(7000);
 
 		//customer 
-		
-		//create
-		app.post("/customers", CustomerController.createCustomer); //good
-		//read
-		app.get("/customers", CustomerController.getAllCustomers); //good
-		app.get("/customers/:id", CustomerController.getCustomerByID); //good
-		//update
-		app.put("/customers", CustomerController.updateCustomer); //good but still add error shit
-		//delete customer and all accounts
-		app.delete("/customers/:id", CustomerController.deleteCustomer); //deletes customer but not account
+		app.post("/customers", CustomerController.createCustomer); 
+		app.get("/customers", CustomerController.getAllCustomers); 
+		app.get("/customers/:id", CustomerController.getCustomerByID); 
+		app.put("/customers", CustomerController.updateCustomer); 
+		app.delete("/customers/:id", CustomerController.deleteCustomer);
 		
 		
 		//account
-		app.post("/customers/:id/accounts", AccountController.createAccount); //good
-		app.get("/customers/:id/accounts", AccountController.getAllCustomerAccounts); //good
+		app.post("/customers/:id/accounts", AccountController.createAccount); 
+		app.get("/customers/:id/accounts", AccountController.getAllCustomerAccounts); 
+		app.get("/customers/:id/accounts/:aID", AccountController.getAccountByID); 
+		app.put("/customers/:id/accounts/:aID", AccountController.updateAccount);
+		app.delete("/customers/:id/accounts/:aID", AccountController.deleteAccount);
 		
 	}
 }

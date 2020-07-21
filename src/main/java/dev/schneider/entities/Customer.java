@@ -12,12 +12,10 @@ public class Customer {
 		this.cID = cID;
 		this.username = username;
 		this.password = password;
-		//this.accounts = accounts;
 	}
 
 	public Customer() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public int getcID() {

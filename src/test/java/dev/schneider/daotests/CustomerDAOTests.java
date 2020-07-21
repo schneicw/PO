@@ -37,7 +37,6 @@ public static CustomerDAO cdao = CustomerDAOImpl.getCustomerDAO();
 			CallableStatement cs = conn.prepareCall(sql);
 			cs.execute();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -46,9 +45,8 @@ public static CustomerDAO cdao = CustomerDAOImpl.getCustomerDAO();
 	@Order(1)
 	//create
 	void createCustomer() {
-		Customer customer = new Customer(0, "usernameguy", "passguy"); //all entities have an id of 0 until you save/ create them
+		Customer customer = new Customer(0, "usernameguy", "passguy"); 
 		cdao.createCustomer(customer);
-		//System.out.println(customer.getcID());
 		Assertions.assertNotEquals(0, customer.getcID());
 		Assertions.assertEquals(1, customer.getcID());
 	}
@@ -59,17 +57,22 @@ public static CustomerDAO cdao = CustomerDAOImpl.getCustomerDAO();
 	@Order(2)
 	void getCustomers() {
 		Set<Customer> customers = cdao.getAllCustomer();
-		//System.out.println(customer.getcID());
 		Assertions.assertNotEquals(0, customers.size());
 		Assertions.assertEquals(1, customers.size());
 	}
 	
 	@Test
 	@Order(3)
-	void getCustomerByID() throws SQLDataException {
+	void getCustomerByID()  {
 		Customer customer = cdao.getCustomerByID(1);
-		//System.out.println(customer.getcID());
 		Assertions.assertNotEquals(0, customer.getcID());
+		Assertions.assertEquals("passguy", customer.getPassword());
+	}
+	
+	@Test
+	@Order(4)
+	void getCustomerByUsername()  {
+		Customer customer = cdao.getCustomerByUsername("usernameguy");
 		Assertions.assertEquals("passguy", customer.getPassword());
 	}
 	
@@ -77,34 +80,34 @@ public static CustomerDAO cdao = CustomerDAOImpl.getCustomerDAO();
 	//update
 	
 	@Test
-	@Order(4)
-	void changeCustomerUsername() throws SQLDataException {
+	@Order(5)
+	void changeCustomerUsername()  {
 		Customer customer = cdao.getCustomerByID(1);
 		customer.setUsername("dsdfsf");
-		customer = cdao.updateCustomer(customer); //saves the changes to that school
+		customer = cdao.updateCustomer(customer); 
 		Assertions.assertEquals("dsdfsf", customer.getUsername());
 	}
 	
 	@Test
-	@Order(5)
-	void changeCustomerPassword() throws SQLDataException {
+	@Order(6)
+	void changeCustomerPassword() {
 		Customer customer = cdao.getCustomerByID(1);
 		customer.setPassword("dsdfsf");
-		customer = cdao.updateCustomer(customer); //saves the changes to that school
+		customer = cdao.updateCustomer(customer); 
 		Assertions.assertEquals("dsdfsf", customer.getPassword());
 	}
 	
 	
 	
 	@Test()
-	@Order(6)
+	@Order(7)
 	void deleteCustomer() {
 		boolean result = cdao.deleteCustomer(1);
 		Assertions.assertEquals(true, result);
 	}
 	
 	@Test()
-	@Order(7)
+	@Order(8)
 	void deleteCustomerBad() {
 		boolean result = cdao.deleteCustomer(10);
 		Assertions.assertEquals(false, result);
@@ -117,7 +120,6 @@ public static CustomerDAO cdao = CustomerDAOImpl.getCustomerDAO();
 			CallableStatement cs = conn.prepareCall(sql);
 			cs.execute();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -5,7 +5,6 @@ import java.util.Set;
 import dev.schneider.entities.Account;
 
 public interface AccountDAO {
-	//where sql statements will go to insert into database
 	
 	//create
 	Account createAccount(Account account);

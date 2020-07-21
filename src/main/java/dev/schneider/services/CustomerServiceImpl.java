@@ -25,6 +25,11 @@ public class CustomerServiceImpl implements CustomerService {
 	public Customer getCustomerByID(int id)  {
 		return cdao.getCustomerByID(id);
 	}
+	
+	@Override
+	public Customer getCustomerbyUsername(String username) {
+		return cdao.getCustomerByUsername(username);
+	}
 
 	@Override
 	public Customer updateCustomer(Customer customer) {

@@ -34,7 +34,6 @@ public class AccountDAOImpl implements AccountDAO {
 	
 	@Override
 	public Account createAccount(Account account) {
-		//try with resources. Will autoclose the connection for us
 		try(Connection conn = ConnectionUtil.getConnection()){
 			String sql = "INSERT INTO BankDB.account VALUES(?,?,?,?)";
 			PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -45,7 +44,7 @@ public class AccountDAOImpl implements AccountDAO {
 			ps.execute();
 			
 			ResultSet rs = ps.getGeneratedKeys();
-			rs.next(); //poor decision just technicality shit
+			rs.next(); 
 			int key = rs.getInt("aID");
 			account.setAcctID(key);
 			
@@ -64,7 +63,6 @@ public class AccountDAOImpl implements AccountDAO {
 			ps.setInt(1, cID);
 
 			ResultSet rs = ps.executeQuery();
-			// ResultSet returns a table. the intial record it points is before the first record
 			
 			Set<Account> accounts = new HashSet<Account>();
 			
@@ -93,8 +91,7 @@ public class AccountDAOImpl implements AccountDAO {
 			ps.setInt(1, acctID);
 			
 			ResultSet rs = ps.executeQuery();
-			// ResultSet returns a table. the intial record it points is before the first record
-			rs.next();// move the cursor to the first actual record
+			rs.next();
 			
 			Account account = new Account();
 			account.setAcctID(rs.getInt("a_id"));

@@ -1,10 +1,12 @@
 package dev.schneider.services;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import dev.schneider.dao.AccountDAO;
 import dev.schneider.dao.AccountDAOImpl;
 import dev.schneider.entities.Account;
+import dev.schneider.exceptions.NegativeBalanceException;
 
 public class AccountServiceImpl implements AccountService {
 	
@@ -26,7 +28,10 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public Account updateAccount(Account account) {
+	public Account updateAccount(Account account) throws NegativeBalanceException{
+		if (account.getBalance() < 0) {
+			throw new NegativeBalanceException();
+		}
 		return adao.updateAccount(account);
 	}
 
@@ -35,16 +40,28 @@ public class AccountServiceImpl implements AccountService {
 		return adao.deleteAccount(id);
 	}
 
+	//higher level
+	
 	@Override
-	public Set<Account> getTasksLessThan(int num) {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<Account> balanceLessThan(Set<Account> bigSet, int num) {
+		Set<Account> smallAccounts = new HashSet<Account>();
+		for(Account account : bigSet) {
+			if (account.getBalance() < num) {
+				smallAccounts.add(account);
+			}
+		}
+		return smallAccounts;
 	}
 
 	@Override
-	public Set<Account> getTasksGreaterThan(int num) {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<Account> balanceGreaterThan(Set<Account> bigSet, int num) {
+		Set<Account> bigAccounts = new HashSet<Account>();
+		for(Account account : bigSet) {
+			if (account.getBalance() > num) {
+				bigAccounts.add(account);
+			}
+		}
+		return bigAccounts;
 	}
 
 }
